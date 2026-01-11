@@ -83,30 +83,33 @@
   margin-top: 3px;
 }
 
-/* Password wrapper for eye icon */
-/* Password wrapper for eye icon */
 .password-wrapper {
-  position: relative;
-  display: block; /* keep column layout */
+  display: flex;
+  align-items: center;          /* vertical center input & icon */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0 0.5rem;
+  background: white;
+  box-sizing: border-box;
+  height: 40px;                 /* FIXED height so icon doesn't move */
 }
 
 .password-wrapper .login-input {
-  height: 40px;          /* keep eye space */
-  padding: 0.6rem 2.8rem 0.6rem 0.6rem; /* same as other inputs */
-  line-height: normal;   /* instead of 40px */
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  background: transparent;
+  height: 100%;                 /* fill the wrapper */
 }
 
-/* Eye icon */
 .password-wrapper .eye-icon {
-  position: absolute;
-  top: 66%;
-  right: 8px;
-  transform: translateY(-50%); /* perfect vertical center */
+  cursor: pointer;
   width: 22px;
   height: 22px;
-  cursor: pointer;
-  z-index: 2;
+  margin-left: 8px;
 }
+
 
 
 
