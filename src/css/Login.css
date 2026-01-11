@@ -90,14 +90,10 @@
   display: block; /* keep column layout */
 }
 
-/* Input inside wrapper */
 .password-wrapper .login-input {
-  width: 100%;
-  padding-right: 2.8rem; /* space for eye icon */
-  height: 40px;           /* fixed height */
-  font-size: 0.95rem;
-  line-height: 40px;      /* aligns text vertically */
-  box-sizing: border-box;
+  height: 40px;          /* keep eye space */
+  padding: 0.6rem 2.8rem 0.6rem 0.6rem; /* same as other inputs */
+  line-height: normal;   /* instead of 40px */
 }
 
 /* Eye icon */

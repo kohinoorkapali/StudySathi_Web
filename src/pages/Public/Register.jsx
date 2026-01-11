@@ -5,34 +5,39 @@ import { registerSchema } from "./schema/register.schema";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import logo from "../../assets/studysathi_2.png";
+import { Link } from "react-router-dom";
+import { useApi } from "../../Hooks/useApi"; // your custom hook
 
 export default function Register() {
   const navigate = useNavigate();
+  const { loading, error, callApi } = useApi(); // destructure from hook
   const [backendError, setBackendError] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm({
-    resolver: zodResolver(registerSchema)
+    resolver: zodResolver(registerSchema),
   });
 
   const onSubmit = async (data) => {
     try {
       setBackendError("");
-      setLoading(true);
+      const res = await callApi("POST", "/auth/register", {
+        fullname: data.fullname,
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      });
 
-      console.log("Register Data:", data);
-
-      setLoading(false);
-      reset();
-      navigate("/login");
+      if (res) {
+        reset();
+        navigate("/login");
+      }
     } catch (err) {
-      setBackendError(err.message || "Something went wrong");
-      setLoading(false);
+      setBackendError(err.message);
     }
   };
 
@@ -45,29 +50,28 @@ export default function Register() {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-group">
-  <label>Full Name:</label>
-  <input
-    type="text"
-    placeholder="Enter your full name"
-    {...register("fullname")}
-    className="login-input"
-    maxLength={25} // prevents typing beyond 25 characters
-  />
-  {errors.fullname && <div className="invalid-feedback">{errors.fullname.message}</div>}
-</div>
+            <label>Full Name:</label>
+            <input
+              type="text"
+              placeholder="Enter your full name"
+              {...register("fullname")}
+              className="login-input"
+              maxLength={25}
+            />
+            {errors.fullname && <div className="invalid-feedback">{errors.fullname.message}</div>}
+          </div>
 
-<div className="form-group">
-  <label>Username:</label>
-  <input
-    type="text"
-    placeholder="Choose a username"
-    {...register("username")}
-    className="login-input"
-    maxLength={25} // prevents typing beyond 25 characters
-  />
-  {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
-</div>
-
+          <div className="form-group">
+            <label>Username:</label>
+            <input
+              type="text"
+              placeholder="Choose a username"
+              {...register("username")}
+              className="login-input"
+              maxLength={25}
+            />
+            {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
+          </div>
 
           <div className="form-group">
             <label>Email</label>
@@ -113,7 +117,7 @@ export default function Register() {
           </button>
 
           <div className="register-text">
-            Already have an account? <a href="/login">Sign In</a>
+            Already have an account? <Link to="/login">Sign In</Link>
           </div>
         </form>
       </div>

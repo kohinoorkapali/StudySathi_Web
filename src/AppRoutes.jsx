@@ -5,7 +5,7 @@ import PublicRoutes from "./Routes/PublicRoutes";
 import PrivateRoutes from "./Routes/PrivateRoutes";
 
 // Lazy-loaded pages
-const LandingPage = React.lazy(() => import("./pages/Public/Landing"));
+const LandingPage = React.lazy(() => import("./pages/Public/LandingPage"));
 const UserLogin = React.lazy(() => import("./pages/Public/Login"));
 const UserRegister = React.lazy(() => import("./pages/Public/Register"));
 const Dashboard = React.lazy(() => import("./pages/Private/Dashboard"));
@@ -17,9 +17,8 @@ const AppRoutes = () => {
       <Routes>
         {/* Landing Page - anyone can see */}
         <Route path="/" element={<LandingPage />} />
-
-        {/* Public Routes (login, register) */}
         <Route element={<PublicRoutes />}>
+        <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<UserLogin />} />
           <Route path="/register" element={<UserRegister />} />
         </Route>
