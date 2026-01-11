@@ -1,0 +1,181 @@
+/* Container for the page */
+.login-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #1e1e2f;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Form box */
+.login-box {
+  width: 450px;
+  max-width: 95%;
+  background: linear-gradient(135deg, rgba(180, 200, 255, 0.95), rgba(150, 180, 255, 0.95));
+  padding: 3rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  color: #213547;
+  text-align: center;
+  box-sizing: border-box;
+  min-height: 550px;
+}
+
+/* Logo */
+.login-logo {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+/* Titles */
+.login-title {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  color: #0c74b4;
+  font-weight: bold;
+}
+
+.login-subtitle {
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  color: #213547;
+}
+
+/* Form group: label + input stacked */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  text-align: left; /* labels on left */
+}
+
+/* Labels */
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #0c74b4;
+}
+
+/* Inputs */
+.login-input {
+  width: 100%;
+  padding: 0.6rem 2.5rem 0.6rem 0.6rem; /* right padding for eye icon */
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  display: block;
+  box-sizing: border-box;
+}
+
+.login-input:focus {
+  border-color: #0c74b4;
+  outline: none;
+}
+
+/* Error messages */
+.invalid-feedback {
+  color: #ff5555;
+  font-size: 13px;
+  margin-top: 3px;
+}
+
+/* Password wrapper for eye icon */
+/* Password wrapper for eye icon */
+.password-wrapper {
+  position: relative;
+  display: block; /* keep column layout */
+}
+
+/* Input inside wrapper */
+.password-wrapper .login-input {
+  width: 100%;
+  padding-right: 2.8rem; /* space for eye icon */
+  height: 40px;           /* fixed height */
+  font-size: 0.95rem;
+  line-height: 40px;      /* aligns text vertically */
+  box-sizing: border-box;
+}
+
+/* Eye icon */
+.password-wrapper .eye-icon {
+  position: absolute;
+  top: 66%;
+  right: 8px;
+  transform: translateY(-50%); /* perfect vertical center */
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+
+
+/* Eye hover effect */
+.eye-icon:hover {
+  opacity: 0.8;
+}
+
+/* Submit button */
+.login-btn {
+  width: 50%;
+  background: #752e2e;
+  border: none;
+  padding: 12px;
+  color: white;
+  font-size: 17px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 15px auto 0 auto;
+  display: block;
+  font-weight: bold;
+}
+
+.login-btn:hover {
+  background: #5d2424;
+}
+
+/* Footer links */
+.register-text {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #213547;
+}
+
+.register-text a {
+  color: #0c74b4;
+  text-decoration: underline;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.register-text a:hover {
+  color: #095a87;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .login-box {
+    width: 90%;
+    padding: 2rem;
+    min-height: auto;
+  }
+
+  .login-title {
+    font-size: 1.5rem;
+  }
+
+  .login-input {
+    padding: 0.6rem;
+    font-size: 14px;
+  }
+
+  .login-btn {
+    width: 60%;
+    font-size: 16px;
+  }
+}

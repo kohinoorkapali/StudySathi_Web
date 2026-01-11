@@ -1,0 +1,186 @@
+/* Register Page Container */
+.RegisterPage {
+  width: 100%;
+  height: 100vh; /* fill viewport */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #1e1e2f; /* dark background */
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow: hidden; /* prevent scrolling */
+}
+
+/* Form box */
+.RegisterForm {
+  width: 600px;
+  max-width: 95%;
+  background: linear-gradient(135deg, rgba(200,220,255,0.95), rgba(230,240,255,0.95));
+  padding: 3rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  color: #213547;
+  text-align: center;
+  box-sizing: border-box;
+  min-height: 550px;
+  position: relative;
+}
+
+/* Logo */
+.login-logo {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+/* Titles */
+.RegisterForm h2 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  color: #0c74b4;
+  font-weight: bold;
+}
+
+.RegisterForm p {
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  color: #213547;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+  color: #0c74b4; /* brand blue */
+}
+
+.login-input {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+  color: #0c74b4;
+}
+
+
+.login-input:focus {
+  border-color: #0c74b4;
+  outline: none;
+}
+
+/* Error messages */
+.invalid-feedback {
+  color: #ff5555;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+/* Password wrapper for eye icon */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input.login-input {
+  flex: 1;
+  padding-right: 40px; /* space for eye icon */
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+.eye-icon:hover {
+  opacity: 1;
+}
+
+/* Submit button */
+.login-btn {
+  width: 50%;
+  background: #752e2e;
+  border: none;
+  padding: 12px;
+  color: white;
+  font-size: 17px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 15px auto 0 auto;
+  display: block;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+  background: #5d2424;
+}
+
+/* Backend error message */
+.backend-error {
+  text-align: center;
+  margin: 10px 0;
+}
+
+/* Footer link */
+.register-text {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #213547;
+}
+
+.register-text a {
+  color: #0c74b4;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.register-text a:hover {
+  color: #095a87;
+}
+
+/* Responsive for mobile */
+@media (max-width: 500px) {
+  .RegisterForm {
+    width: 90%;
+    padding: 2rem;
+    min-height: auto;
+  }
+
+  .RegisterForm h2 {
+    font-size: 1.5rem;
+  }
+
+  .login-input {
+    padding: 0.6rem;
+    font-size: 14px;
+  }
+
+  .login-btn {
+    width: 60%;
+    font-size: 16px;
+  }
+
+  .register-text {
+    font-size: 12px;
+  }
+}
