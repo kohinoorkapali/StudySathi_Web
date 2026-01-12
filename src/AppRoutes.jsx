@@ -29,7 +29,7 @@ const AppRoutes = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/browse" element={<Browse />} />
           <Route path="/resources" element={<MyResources />} />
-          <Route path="/upload" element={<UploadResource />} />  {/* Add this */}
+          <Route path="/upload" element={<UploadResource />} />
         </Route>
 
         {/* Redirect unknown paths */}
