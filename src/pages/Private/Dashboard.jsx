@@ -1,6 +1,7 @@
 // src/pages/Private/Dashboard.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../../components/Header/Header"; 
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -18,7 +19,12 @@ export default function Dashboard() {
   };
 
   return (
-    <div style={styles.container}>
+
+    
+    <div>
+      <Header />
+
+      <div style={styles.container}>
       <h1 style={styles.title}>Welcome to your Dashboard, {user.fullname}!</h1>
       <p style={styles.subtitle}>This is a private page. Only logged-in users can see this.</p>
 
@@ -31,6 +37,7 @@ export default function Dashboard() {
       <button style={styles.logoutBtn} onClick={handleLogout}>
         Logout
       </button>
+    </div>
     </div>
   );
 }

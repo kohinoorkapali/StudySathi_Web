@@ -1,11 +1,16 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-const PublicRoutes = () => {
+const PrivateRoutes = () => {
+  const token = localStorage.getItem("access_token"); // check if user is logged in
 
-  const token = localStorage.getItem("access_token"); 
+  // If no token, redirect to login
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
 
-  return token ? <Navigate to="/dashboard" replace /> : <Outlet />;
+  // If token exists, render the requested page
+  return <Outlet />;
 };
 
-export default PublicRoutes;
+export default PrivateRoutes;

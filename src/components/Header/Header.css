@@ -1,0 +1,146 @@
+/* Navbar container */
+.header {
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', sans-serif;
+  flex-wrap: nowrap;
+}
+
+/* Sections */
+.header-left,
+.header-center,
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-left {
+  flex-shrink: 0;
+}
+
+.header-center {
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.header-right {
+  flex-shrink: 0;
+}
+
+/* Logo (no hover effect) */
+.logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  cursor: default;
+}
+/* Navigation buttons */
+.nav-btn {
+  text-decoration: none;
+  color: #000;               /* black text by default */
+  font-size: 14px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  background-color: transparent;
+}
+
+/* Hover effect for non-active nav buttons */
+.nav-btn:not([aria-current="page"]):hover {
+  background-color: rgba(0, 123, 255, 0.1); /* very light blue */
+  color: #000; /* keep text black */
+}
+
+/* Active route (current page) */
+.nav-btn[aria-current="page"] {
+  background-color: rgba(0, 123, 255, 0.2); /* slightly darker blue */
+  color: #000; /* text can remain black or white if you prefer */
+}
+
+/* Hovering over the active page */
+.nav-btn[aria-current="page"]:hover {
+  background-color: rgba(0, 123, 255, 0.25); /* slightly darker than active */
+}
+
+/* Upload button */
+.upload-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 22px;      /* bigger button */
+  border-radius: 12px;     /* curved rectangle */
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.upload-btn:hover {
+  background-color: #0056b3;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.upload-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
+}
+
+/* Profile circle */
+.profile {
+  position: relative;
+  background-color: #eee;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.profile:hover {
+  background-color: #ddd;
+  transform: scale(1.05);
+}
+
+
+
+/* Small screens (mobile) */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    height: auto;
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .header-center {
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+
+  .nav-btn {
+    font-size: 12px;
+    padding: 6px 8px;
+  }
+
+  .upload-btn {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .profile {
+    width: 28px;
+    height: 28px;
+  }
+}
