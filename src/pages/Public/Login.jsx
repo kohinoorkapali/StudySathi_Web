@@ -30,13 +30,19 @@ const Login = () => {
       });
 
       if (res.access_token) {
-        localStorage.setItem("access_token", res.access_token);
-        if (res.role) localStorage.setItem("role", res.role);
-        reset();
-        navigate("/dashboard");
-      } else {
-        setBackendError(res.message || "Invalid credentials");
-      }
+  localStorage.setItem("access_token", res.access_token);
+  if (res.role) localStorage.setItem("role", res.role);
+
+  // ✅ Store user_id
+  if (res.user && res.user.id) {
+    localStorage.setItem("user_id", res.user.id);
+  }
+
+  reset();
+  navigate("/dashboard");
+} else {
+  setBackendError(res.message || "Invalid credentials");
+}
     } catch (err) {
       setBackendError(err.message || "Something went wrong");
     } finally {
