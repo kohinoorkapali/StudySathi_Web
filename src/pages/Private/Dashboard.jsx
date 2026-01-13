@@ -22,7 +22,6 @@ export default function Dashboard() {
 
     
     <div>
-      <Header />
 
       <div style={styles.container}>
       <h1 style={styles.title}>Welcome to your Dashboard, {user.fullname}!</h1>

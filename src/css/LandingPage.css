@@ -33,13 +33,13 @@ html, body, #root {
   z-index: 0;
 }
 
-.header, .intro, .features {
+.landing-header, .intro, .features {
   position: relative;
   z-index: 1;
 }
 
 /* Header */
-.header {
+.landing-header {
   display: flex;
   justify-content: space-between;
   align-items: center;

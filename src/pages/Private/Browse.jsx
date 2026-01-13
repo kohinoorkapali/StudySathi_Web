@@ -5,7 +5,6 @@ import Header from "../../components/Header/Header";
 export default function Browse() {
   return (
     <div>
-        <Header />
         <div style={styles.container}>
       <h1 style={styles.title}>Browse Resources</h1>
       <p style={styles.subtitle}>Explore educational content shared by others.</p>

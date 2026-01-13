@@ -5,7 +5,6 @@ import Header from "../../components/Header/Header";
 export default function MyResources() {
   return (
     <div>
-        <Header />
         <div style={styles.container}>
       <h1 style={styles.title}>My Resources</h1>
       <p style={styles.subtitle}>Here are the materials you've uploaded.</p>

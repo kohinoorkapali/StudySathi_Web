@@ -20,7 +20,7 @@ export default function LandingPage() {
       {/* Overlay layer */}
       <div className="overlay"></div>
 
-              <header className="header">
+              <header className="landing-header">
         <img src={logo} alt="StudySathi Logo" className="logo" />
         <Link to="/login" className="sign-in">
           Sign In

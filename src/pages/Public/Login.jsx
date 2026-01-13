@@ -7,7 +7,7 @@ import logo from "../../assets/studysathi_2.png";
 import eyeOpen from "../../assets/eye_open.png";
 import eyeClosed from "../../assets/eye_close.png";
 import { loginSchema } from "./schema/login.schema";
-import { apiRequest } from "../../utils/api.js"; // make sure you have this
+import { apiRequest } from "../../utils/api.js";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
-    resolver: zodResolver(loginSchema)
+    resolver: zodResolver(loginSchema),
   });
 
   const togglePassword = () => setShowPassword(prev => !prev);
@@ -25,22 +25,15 @@ const Login = () => {
     setLoading(true);
     setBackendError("");
     try {
-      // Call backend API
       const res = await apiRequest("POST", "/auth/login", {
-        data: {
-          email: data.email,
-          password: data.password
-        }
+        data: { email: data.email, password: data.password },
       });
 
-      // If backend sends access_token, login success
       if (res.access_token) {
         localStorage.setItem("access_token", res.access_token);
-        // optional: save role if you have one
         if (res.role) localStorage.setItem("role", res.role);
-
         reset();
-        navigate("/dashboard"); // redirect to dashboard after login
+        navigate("/dashboard");
       } else {
         setBackendError(res.message || "Invalid credentials");
       }
@@ -52,68 +45,58 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
+    <div className="login-page">
+      <div className="login-card">
         <img src={logo} alt="Logo" className="login-logo" />
-        <h2 className="login-title">Welcome Back</h2>
-        <p className="login-subtitle">Sign in to continue</p>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {/* Email */}
+        <h2 className="login-title">Welcome Back</h2>
+        <p className="login-subtitle">Sign in to access your study resources</p>
+
+        {backendError && <div className="backend-error">{backendError}</div>}
+
+        <form onSubmit={handleSubmit(onSubmit)} className="login-form">
           <div className="form-group">
-            <label>Email</label>
+            <label>Email Address</label>
             <input
               type="email"
               {...register("email")}
-              placeholder="Enter your email"
+              placeholder="student@email.com"
               className="login-input"
-              maxLength={50}
             />
-            {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
+            {errors.email && <p className="invalid-feedback">{errors.email.message}</p>}
           </div>
 
-          {/* Password */}
           <div className="form-group">
-  <label>Password</label>
-  
-  {/* Input + Icon container */}
-  <div className="password-wrapper">
-    <input
-      type={showPassword ? "text" : "password"}
-      {...register("password")}
-      placeholder="Enter your password"
-      className="login-input"
-    />
-    <img
-      src={showPassword ? eyeOpen : eyeClosed}
-      alt="Toggle password"
-      className="eye-icon"
-      onClick={togglePassword}
-    />
-  </div>
-
-  {/* Error message stays outside the wrapper */}
-  <div className="invalid-feedback">
-    {errors.password?.message}
-  </div>
-</div>
-
-
-          {/* Backend error */}
-          {backendError && (
-            <div className="backend-error" style={{ color: "red", marginTop: "10px" }}>
-              {backendError}
+            <label>Password</label>
+            <div className="password-wrapper">
+              <input
+                type={showPassword ? "text" : "password"}
+                {...register("password")}
+                placeholder="********"
+                className="login-input"
+              />
+              <img
+                src={showPassword ? eyeOpen : eyeClosed}
+                alt="Toggle password"
+                className="eye-icon"
+                onClick={togglePassword}
+              />
             </div>
-          )}
+            {errors.password && <p className="invalid-feedback">{errors.password.message}</p>}
+            <Link to="/forgot-password" className="forgot-password">Forgot password?</Link>
+          </div>
 
-          {/* Submit button */}
           <button type="submit" className="login-btn" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Signing In..." : "Sign In"}
           </button>
 
-          <div className="register-text">
-            Don’t have an account? <Link to="/register">Create Account</Link>
+          <div className="divider">
+            <span>Don't have an account?</span>
           </div>
+
+          <Link to="/register" className="register-btn">
+            Create New Account
+          </Link>
         </form>
       </div>
     </div>
