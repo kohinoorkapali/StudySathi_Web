@@ -1,20 +1,50 @@
 // src/pages/MyResources.jsx
-import React from "react";
-import Header from "../../components/Header/Header"; 
+import React, { useEffect, useState } from "react";
+import Header from "../../components/Header/Header";
+import UploadCard from "../../components/PersonalUploadCard/PersonalUploadCard"; // import the card we built
 
 export default function MyResources() {
+  const [resources, setResources] = useState([]);
+
+  // Fetch resources from backend
+  useEffect(() => {
+  const userId = localStorage.getItem("user_id"); // saved at login
+
+  fetch(`http://localhost:5000/api/materials/my?user_id=${userId}`)
+    .then(res => res.json())
+    .then(result => {
+      console.log("My materials:", result.data);
+      setResources(result.data);
+    })
+    .catch(err => console.error(err));
+}, []);
+
   return (
     <div>
-        <div style={styles.container}>
-      <h1 style={styles.title}>My Resources</h1>
-      <p style={styles.subtitle}>Here are the materials you've uploaded.</p>
+      <div style={styles.container}>
+        <h1 style={styles.title}>My Resources</h1>
+        <p style={styles.subtitle}>Here are the materials you've uploaded.</p>
 
-      <ul style={styles.list}>
-        <li>📄 English Essay - Grade 10</li>
-        <li>📊 Science Project Slides</li>
-        <li>📚 History Timeline PDF</li>
-      </ul>
-    </div>
+        {resources.length === 0 ? (
+          <p>No resources uploaded yet.</p>
+        ) : (
+          <div style={styles.list}>
+            {resources.map((res) => (
+              <UploadCard
+                key={res.id}
+                title={res.title}
+                category={res.category}
+                date={res.date}
+                views={res.views}
+                likes={res.likes}
+                onDelete={() => console.log("Delete", res.id)}
+                onView={() => console.log("View", res.id)}
+                onEdit={() => console.log("Edit", res.id)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

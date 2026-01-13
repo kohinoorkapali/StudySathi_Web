@@ -93,17 +93,17 @@ export default function UploadResource() {
               <p>
                 {selectedFileName
                   ? `Selected: ${selectedFileName}`
-                  : "Click to upload PDF, DOC, DOCX, JPG, PNG (max 50MB)"}
+                  : "Click to upload PDF, DOC, DOCX , PPT, PPTX(max 5MB)"}
               </p>
             </div>
             <input
-              type="file"
-              id="hiddenFileInput"
-              accept=".pdf,.doc,.docx,.jpg,.png"
-              style={{ display: "none" }}
-              {...register("file")}
-              onChange={handleFileChange}
-            />
+  type="file"
+  id="hiddenFileInput"
+  accept=".pdf,.doc,.docx,.ppt,.pptx" // ✅ only allow documents
+  style={{ display: "none" }}
+  {...register("file")}
+  onChange={handleFileChange}
+/>
             {errors.file && <p className="error-msg">{errors.file.message}</p>}
 
             {/* Title */}
