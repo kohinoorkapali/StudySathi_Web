@@ -1,181 +1,161 @@
-/* Page background */
 .login-page {
   width: 100%;
   height: 100vh;
+  background:linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("../assets/Books.png") no-repeat center center/cover;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #1e1e2f;
-  padding: 1rem;
+  font-family: "Segoe UI", sans-serif;
   box-sizing: border-box;
+  overflow: hidden; 
 }
 
-/* Card */
+/* Glassmorphism Card */
 .login-card {
-  width: 400px;
-  max-width: 95%;
-  background: linear-gradient(135deg, rgba(200,220,255,0.95), rgba(230,240,255,0.95));
-  padding: 3rem 2rem;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  width: 430px;
+  padding: 35px 30px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px);
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
   text-align: center;
-  box-sizing: border-box;
+  color: #fff;
 }
 
-/* Logo */
 .login-logo {
-  width: 100px;
-  margin-bottom: 20px;
+ width: 220px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
 }
 
-/* Title & subtitle */
+
 .login-title {
-  font-size: 1.8rem;
-  color: #1e2a78;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+  font-size: 1.6rem;
+  margin: 10px 0 4px;
 }
 
 .login-subtitle {
-  font-size: 0.95rem;
-  color: #4d5f7c;
-  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  opacity: 0.85;
+  margin-bottom: 20px;
 }
 
-/* Form groups */
-.form-group {
+/* Error */
+.backend-error {
+  background: #fa7d7d33;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+}
+
+/* Form */
+.login-form {
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
+  gap: 14px;
+}
+
+.form-group {
   text-align: left;
 }
 
 .form-group label {
-  margin-bottom: 5px;
-  font-weight: 600;
-  color: #1e2a78;
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+  display: block;
 }
 
 .login-input {
-  padding: 0.6rem 0.75rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 0.95rem;
+  width: 98%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 0.9rem;
 }
 
 .login-input:focus {
-  border-color: #1e2a78;
-  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 140, 255, 0.5);
 }
 
-/* Password wrapper */
 .password-wrapper {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 0 0.5rem;
-  background: white;
-  height: 40px;
-}
-
-.password-wrapper .login-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  height: 100%;
-  background: transparent;
+  position: relative;
 }
 
 .eye-icon {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   cursor: pointer;
-  margin-left: 8px;
+  opacity: 0.7;
 }
 
 .eye-icon:hover {
-  opacity: 0.8;
+  opacity: 1;
 }
 
-/* Forgot password link */
+.invalid-feedback {
+  font-size: 0.75rem;
+  color: #ffd1d1;
+}
+
+/* Forgot password */
 .forgot-password {
-  font-size: 0.8rem;
-  color: #1e2a78;
-  float: right;
-  margin-top: 5px;
+  font-size: 0.75rem;
+  color: #aad4ff;
   text-decoration: none;
+  float: right;
+  margin-top: 4px;
 }
 
-.forgot-password:hover {
-  text-decoration: underline;
-}
-
-/* Submit button */
+/* Button */
 .login-btn {
-  width: 100%;
-  background: #1e2a78;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 25px;
   border: none;
-  padding: 12px;
+  background: linear-gradient(135deg, #1d9bf0, #0066ff);
   color: white;
-  font-size: 1rem;
-  border-radius: 6px;
+  font-size: 0.95rem;
   cursor: pointer;
-  font-weight: bold;
-  margin-top: 15px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .login-btn:hover {
-  background: #15235a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 102, 255, 0.4);
 }
 
 /* Divider */
 .divider {
-  text-align: center;
+  margin-top: 15px;
   font-size: 0.8rem;
-  color: #4d5f7c;
-  margin: 20px 0 10px 0;
+  opacity: 0.8;
 }
 
-/* Register button */
+/* Register */
 .register-btn {
   display: block;
-  width: 100%;
-  text-align: center;
-  border: 1px solid #1e2a78;
-  color: #1e2a78;
-  padding: 10px;
-  border-radius: 6px;
+  margin-top: 8px;
+  padding: 8px;
+  border-radius: 25px;
+  border: 1px solid #fff;
+  color: #fff;
   text-decoration: none;
-  font-weight: bold;
+  font-size: 0.85rem;
+  transition: background 0.2s ease;
 }
 
 .register-btn:hover {
-  background: #1e2a78;
-  color: white;
+  background: rgba(255, 255, 255, 0.2);
 }
 
-/* Error messages */
+
 .invalid-feedback {
-  color: #e74c3c;
-  font-size: 12px;
-  margin-top: 3px;
-}
-
-.backend-error {
-  color: #e74c3c;
-  margin-bottom: 10px;
-  font-weight: 500;
-}
-
-/* Responsive */
-@media (max-width: 480px) {
-  .login-card {
-    width: 95%;
-    padding: 2rem 1.5rem;
-  }
-
-  .login-title {
-    font-size: 1.5rem;
-  }
+  font-size: 1rem;
+  color: red; /* bright red */
+  margin-top: 6px; /* small gap from input */
 }

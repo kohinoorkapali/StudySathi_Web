@@ -30,9 +30,12 @@ const AppRoutes = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/browse" element={<Browse />} />
           <Route path="/resources" element={<MyResources />} />
-          <Route path="/upload" element={<UploadResource />} />
+          
         </Route>
 
+        <Route element={<PrivateRoutes noHeader />}>
+          <Route path="/upload" element={<UploadResource />} />
+        </Route>
         {/* Redirect unknown paths */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

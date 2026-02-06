@@ -33,8 +33,8 @@ export default function MyResources() {
               <UploadCard
                 key={res.id}
                 title={res.title}
-                category={res.category}
-                date={res.date}
+                category={res.stream}
+                date={new Date(res.createdAt).toLocaleDateString()}
                 views={res.views}
                 likes={res.likes}
                 onDelete={() => console.log("Delete", res.id)}
@@ -42,6 +42,7 @@ export default function MyResources() {
                 onEdit={() => console.log("Edit", res.id)}
               />
             ))}
+
           </div>
         )}
       </div>

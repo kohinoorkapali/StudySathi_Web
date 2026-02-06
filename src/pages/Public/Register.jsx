@@ -7,11 +7,20 @@ import { useState } from "react";
 import logo from "../../assets/studysathi_2.png";
 import { Link } from "react-router-dom";
 import { useApi } from "../../Hooks/useApi"; // your custom hook
+import eyeOpen from "../../assets/eye_open.png";
+import eyeClosed from "../../assets/eye_close.png";
+
 
 export default function Register() {
   const navigate = useNavigate();
   const { loading, error, callApi } = useApi(); // destructure from hook
   const [backendError, setBackendError] = useState("");
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+const toggleConfirmPassword = () => {
+  setShowConfirmPassword(prev => !prev);
+};
+
 
   const {
     register,
@@ -97,14 +106,26 @@ export default function Register() {
 
           <div className="form-group">
             <label>Confirm Password</label>
-            <input 
-              type="password" 
-              placeholder="Confirm your password" 
-              {...register("confirm_password")} 
-              className="login-input" 
-            />
-            {errors.confirm_password && <div className="invalid-feedback">{errors.confirm_password.message}</div>}
+            <div className="password-wrapper">
+              <input 
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm your password"
+                {...register("confirm_password")}
+                className="login-input"
+              />
+              <img
+                src={showConfirmPassword ? eyeOpen : eyeClosed}
+                alt="Toggle confirm password"
+                className="eye-icon"
+                onClick={toggleConfirmPassword}
+              />
+            </div>
+            {errors.confirm_password && (
+              <div className="invalid-feedback">{errors.confirm_password.message}</div>
+            )}
           </div>
+
+
 
           {backendError && (
             <div className="backend-error" style={{ color: "red", margin: "10px 0" }}>
@@ -112,13 +133,17 @@ export default function Register() {
             </div>
           )}
 
-          <button type="submit" className="login-btn" disabled={loading}>
+          <button type="submit" className="register_page-btn" disabled={loading}>
             {loading ? "Registering..." : "Create Account"}
           </button>
 
-          <div className="register-text">
-            Already have an account? <Link to="/login">Sign In</Link>
+          <div className="login_route-divider">
+            Already have an account?
           </div>
+
+          <Link to="/login" className="login_route-btn">
+            Sign In
+          </Link>
         </form>
       </div>
     </div>

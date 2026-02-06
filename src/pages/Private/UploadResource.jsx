@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { uploadSchema } from "./schema/upload.schema";
 import "../../css/UploadResource.css";
 import Header from "../../components/Header/Header";
-import { useApi } from "../../hooks/useApi";
+import { useApi } from "../../Hooks/useApi";
 
 export default function UploadResource() {
   const navigate = useNavigate();
