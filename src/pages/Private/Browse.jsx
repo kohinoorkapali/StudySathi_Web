@@ -77,9 +77,9 @@ export default function BrowsePage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-blue-50 font-sans text-slate-700">
+    <div className="flex min-h-screen bg-blue-100 font-sans text-slate-700">
       {/* SIDEBAR */}
-      <aside className="w-72 hidden lg:flex flex-col bg-blue-100 border-r border-slate-200 sticky top-0 h-screen">
+      <aside className="w-72 hidden lg:flex flex-col bg-blue-200 border-r border-slate-200 sticky top-0 h-screen">
         <div className="p-8 flex-1 overflow-y-auto">
           <h2 className="text-xl font-bold mb-6 text-slate-800">Filters</h2>
 

@@ -22,7 +22,7 @@ export default function Header() {
 
       <div className="header-right">
         <NavLink to="/upload" className="upload-btn">Upload</NavLink>
-        <div className="profile"><span>RK</span></div>
+        <NavLink to="/profile" className="profile-btn">Rk</NavLink>
       </div>
     </nav>
   );

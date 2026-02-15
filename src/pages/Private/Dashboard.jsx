@@ -20,7 +20,7 @@ export default function Dashboard() {
   }));
 
   return (
-    <div className="min-h-screen bg-blue-50 px-4 sm:px-6 lg:px-20 py-10">
+    <div className="min-h-screen bg-blue-100 px-4 sm:px-6 lg:px-20 py-10">
       {/* Hero Section */}
       <div className="text-center mb-12">
         <h1 className="text-3xl sm:text-4xl font-bold text-blue-900">
@@ -73,7 +73,8 @@ export default function Dashboard() {
       key={index}
       title={item.title}
       author={item.author}
-      stream={item.tags[0]}   // optional: show first tag as stream
+      stream={item.tags[0]}  
+      onView={() => console.log("View", item.title)} 
       onDownload={() => console.log("Download", item.title)}
     />
   ))}

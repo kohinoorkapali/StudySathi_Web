@@ -12,6 +12,7 @@ const Dashboard = React.lazy(() => import("./pages/Private/Dashboard"));
 const Browse = React.lazy(() => import("./pages/Private/Browse"));
 const MyResources = React.lazy(() => import("./pages/Private/MyResource"));
 const UploadResource = React.lazy(() => import("./pages/Private/UploadResource"));
+const Profile = React.lazy(() => import("./pages/Private/Profile"));
 
 const AppRoutes = () => {
   return (
@@ -30,6 +31,7 @@ const AppRoutes = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/browse" element={<Browse />} />
           <Route path="/resources" element={<MyResources />} />
+          <Route path="/profile" element={<Profile />} />
           
         </Route>
 
