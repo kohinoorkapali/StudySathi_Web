@@ -129,7 +129,8 @@ export default function BrowsePage() {
           <input
             type="text"
             placeholder="Search by title or author..."
-            className="w-full p-5 rounded-2xl border border-gray-200 bg-white shadow-sm text-lg"
+            className="w-full p-5 rounded-2xl border border-gray-200 bg-white shadow-sm text-lg
+                      focus:outline-none focus:ring-2 focus:ring-orange-100 focus:border-orange-500"
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);

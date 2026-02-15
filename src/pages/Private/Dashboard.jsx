@@ -1,56 +1,47 @@
-import React from "react";
+// src/pages/Dashboard/Dashboard.jsx
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MaterialCard from "../../components/MaterialCard";
-
+import { useApi } from "../../Hooks/useApi";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { callApi } = useApi();
+  const [uploads, setUploads] = useState([]);
 
-  const stats = [
-    { label: "Total Resources", value: 12, bg: "bg-blue-100", icon: "📖" },
-    { label: "Total Downloads", value: 2444, bg: "bg-blue-100", icon: "📥" },
-    { label: "Contributors", value: 8, bg: "bg-blue-100", icon: "👥" },
-  ];
+  // Fetch newest materials from all users
+  useEffect(() => {
+    const fetchMaterials = async () => {
+      try {
+        const res = await callApi("GET", "/materials"); // fetch all materials
+        const sorted = (res.data || []).sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setUploads(sorted.slice(0, 9)); // only newest 9
+      } catch (err) {
+        console.error("Failed to fetch materials:", err);
+      }
+    };
 
-  const uploads = Array.from({ length: 9 }, (_, i) => ({
-    title: `Sample Resource ${i + 1}`,
-    author: `Author ${i + 1}`,
-    downloads: Math.floor(Math.random() * 500),
-    tags: ["Science", "Math", "12th"],
-  }));
+    fetchMaterials();
+  }, [callApi]);
+
+  // Format date helper
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+    return new Date(dateStr).toLocaleDateString();
+  };
 
   return (
     <div className="min-h-screen bg-blue-100 px-4 sm:px-6 lg:px-20 py-10">
       {/* Hero Section */}
       <div className="text-center mb-12">
         <h1 className="text-3xl sm:text-4xl font-bold text-blue-900">
-          Welcome to StudySasthi 👋
+          Welcome to StudySasthi
         </h1>
         <p className="text-slate-500 mt-3 text-sm sm:text-base">
           Your hub for sharing and discovering study materials
         </p>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-14">
-        {stats.map((stat, index) => (
-          <div
-            key={index}
-            className="bg-white border border-gray-100 rounded-2xl p-6 sm:p-8 text-center shadow-sm hover:shadow-lg transition-all"
-          >
-            <div
-              className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full ${stat.bg} text-xl`}
-            >
-              {stat.icon}
-            </div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-slate-800">
-              {stat.value}
-            </div>
-            <p className="text-sm sm:text-base font-medium text-blue-600 mt-1">
-              {stat.label}
-            </p>
-          </div>
-        ))}
       </div>
 
       {/* Recent Uploads Header */}
@@ -59,7 +50,7 @@ export default function Dashboard() {
           Recent Uploads
         </h2>
         <span
-          className="text-sm sm:text-base text-blue-600 cursor-pointer hover:underline"
+          className="text-sm sm:text-base text-blue-800 cursor-pointer hover:underline"
           onClick={() => navigate("/browse")}
         >
           View All →
@@ -67,19 +58,26 @@ export default function Dashboard() {
       </div>
 
       {/* Upload Cards */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-  {uploads.map((item, index) => (
-    <MaterialCard
-      key={index}
-      title={item.title}
-      author={item.author}
-      stream={item.tags[0]}  
-      onView={() => console.log("View", item.title)} 
-      onDownload={() => console.log("Download", item.title)}
-    />
-  ))}
-</div>
-
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {uploads.length === 0 ? (
+          <p className="text-slate-500 col-span-full text-center">
+            No uploads yet.
+          </p>
+        ) : (
+          uploads.map((item) => (
+            <MaterialCard
+              key={item.id}
+              title={item.title}
+              author={item.author}// display author if joined
+              date={formatDate(item.createdAt)}
+              stream={item.stream}
+              description={item.description}
+              onView={() => console.log("View", item.title)}
+              onDownload={() => console.log("Download", item.title)}
+            />
+          ))
+        )}
+      </div>
     </div>
   );
 }
