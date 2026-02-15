@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+// src/pages/BrowsePage/BrowsePage.jsx
+import React, { useState, useEffect } from "react";
 import Pagination from "../../components/Pagination";
 import MaterialCard from "../../components/MaterialCard";
+import { useApi } from "../../Hooks/useApi";
 
 export default function BrowsePage() {
+  const [resources, setResources] = useState([]);
   const [sortOrder, setSortOrder] = useState("newest");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,24 +25,21 @@ export default function BrowsePage() {
   ];
 
   const [selectedStreams, setSelectedStreams] = useState([]);
+  const { callApi } = useApi();
 
-  const allResources = Array.from({ length: 30 }).map((_, i) => ({
-    id: i,
-    title:
-      i % 3 === 0
-        ? "Complete Physics Chapter 5"
-        : i % 3 === 1
-        ? "Calculus Formula Sheet"
-        : "Organic Chemistry Reactions",
-    description:
-      i % 2 === 0
-        ? "Comprehensive notes covering the chapter thoroughly."
-        : "Concise summary and formulas for quick revision.",
-    stream: streams[i % streams.length],
-    author: i % 2 === 0 ? "Rahul Kumar" : "Priya Sharma",
-    date: new Date(2024, 0, 25 - i).toLocaleDateString(),
-    downloads: 124 - i,
-  }));
+  // Fetch materials from backend
+  useEffect(() => {
+    const fetchResources = async () => {
+      try {
+        const data = await callApi("GET", "/materials"); // GET all materials
+        setResources(data.data || []);
+      } catch (err) {
+        console.error("Failed to fetch materials:", err);
+      }
+    };
+
+    fetchResources();
+  }, [callApi]);
 
   const toggleStream = (stream) => {
     setSelectedStreams((prev) =>
@@ -50,20 +50,25 @@ export default function BrowsePage() {
     setCurrentPage(1);
   };
 
-  const filteredResources = allResources.filter((res) => {
+  // Filter by search and stream
+  const filteredResources = resources.filter((res) => {
     const matchesSearch =
       res.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      res.author.toLowerCase().includes(searchTerm.toLowerCase());
+      (res.author && res.author.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesStream =
       selectedStreams.length === 0 || selectedStreams.includes(res.stream);
     return matchesSearch && matchesStream;
   });
 
+  // Sort by date
   const sortedResources = [...filteredResources].sort((a, b) => {
-    if (sortOrder === "newest") return new Date(b.date) - new Date(a.date);
-    return new Date(a.date) - new Date(b.date);
+    const dateA = new Date(a.createdAt || a.date);
+    const dateB = new Date(b.createdAt || b.date);
+    if (sortOrder === "newest") return dateB - dateA;
+    return dateA - dateB;
   });
 
+  // Pagination
   const totalPages = Math.ceil(sortedResources.length / itemsPerPage);
   const displayedResources = sortedResources.slice(
     (currentPage - 1) * itemsPerPage,
@@ -74,6 +79,12 @@ export default function BrowsePage() {
     setSelectedStreams([]);
     setSearchTerm("");
     setCurrentPage(1);
+  };
+
+  // Helper: format date without time
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+    return new Date(dateStr).toLocaleDateString(); // e.g., "2/15/2026"
   };
 
   return (
@@ -137,9 +148,7 @@ export default function BrowsePage() {
             <button
               onClick={() => setSortOrder("newest")}
               className={`px-6 py-2 rounded-full text-sm font-bold ${
-                sortOrder === "newest"
-                  ? "bg-[#1d4ed8] text-white"
-                  : "text-slate-500"
+                sortOrder === "newest" ? "bg-[#1d4ed8] text-white" : "text-slate-500"
               }`}
             >
               Newest First
@@ -147,9 +156,7 @@ export default function BrowsePage() {
             <button
               onClick={() => setSortOrder("oldest")}
               className={`px-6 py-2 rounded-full text-sm font-bold ${
-                sortOrder === "oldest"
-                  ? "bg-[#1d4ed8] text-white"
-                  : "text-slate-500"
+                sortOrder === "oldest" ? "bg-[#1d4ed8] text-white" : "text-slate-500"
               }`}
             >
               Oldest First
@@ -164,7 +171,7 @@ export default function BrowsePage() {
               key={res.id}
               title={res.title}
               author={res.author}
-              date={res.date}
+              date={formatDate(res.createdAt || res.date)} // only date
               description={res.description}
               stream={res.stream}
               onView={() => console.log("view", res.id)}
