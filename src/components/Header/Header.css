@@ -94,23 +94,28 @@
 }
 
 /* Profile circle */
-.profile {
-  position: relative;
-  background-color: #eee;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
+/* Profile button */
+.profile-btn {
+  background-color: #6f42c1;       /* gray color, you can change to any color you like */
+  color: white;                    /* text color */
+  padding: 10px 22px;              /* match Upload button padding */
+  border-radius: 12px;             /* curved rectangle */
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: all 0.25s ease;
+  text-decoration: none;           /* remove underline if it's a link */
 }
 
-.profile:hover {
-  background-color: #ddd;
-  transform: scale(1.05);
+.profile-btn:hover {
+  background-color: #5936a2;       /* slightly darker shade on hover */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transform: translateY(-1px);
+}
+
+.profile-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 
@@ -139,7 +144,7 @@
     padding: 10px;
   }
 
-  .profile {
+  .profile-btn {
     width: 28px;
     height: 28px;
   }
