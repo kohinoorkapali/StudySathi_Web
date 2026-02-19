@@ -31,6 +31,7 @@
 
 .header-right {
   flex-shrink: 0;
+  gap: 12px;
 }
 
 /* Logo (no hover effect) */
@@ -40,10 +41,11 @@
   object-fit: contain;
   cursor: default;
 }
+
 /* Navigation buttons */
 .nav-btn {
   text-decoration: none;
-  color: #000;               /* black text by default */
+  color: #000;
   font-size: 14px;
   padding: 8px 14px;
   border-radius: 8px;
@@ -54,19 +56,18 @@
 
 /* Hover effect for non-active nav buttons */
 .nav-btn:not([aria-current="page"]):hover {
-  background-color: rgba(0, 123, 255, 0.1); /* very light blue */
-  color: #000; /* keep text black */
+  background-color: rgba(0, 123, 255, 0.1);
+  color: #000;
 }
 
 /* Active route (current page) */
 .nav-btn[aria-current="page"] {
-  background-color: rgba(0, 123, 255, 0.2); /* slightly darker blue */
-  color: #000; /* text can remain black or white if you prefer */
+  background-color: rgba(0, 123, 255, 0.2);
+  color: #000;
 }
 
-/* Hovering over the active page */
 .nav-btn[aria-current="page"]:hover {
-  background-color: rgba(0, 123, 255, 0.25); /* slightly darker than active */
+  background-color: rgba(0, 123, 255, 0.25);
 }
 
 /* Upload button */
@@ -74,8 +75,8 @@
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 22px;      /* bigger button */
-  border-radius: 12px;     /* curved rectangle */
+  padding: 10px 22px;
+  border-radius: 12px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -93,22 +94,21 @@
   box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
 }
 
-/* Profile circle */
 /* Profile button */
 .profile-btn {
-  background-color: #6f42c1;       /* gray color, you can change to any color you like */
-  color: white;                    /* text color */
-  padding: 10px 22px;              /* match Upload button padding */
-  border-radius: 12px;             /* curved rectangle */
+  background-color: #6f42c1;
+  color: white;
+  padding: 10px 22px;
+  border-radius: 12px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.25s ease;
-  text-decoration: none;           /* remove underline if it's a link */
+  text-decoration: none;
 }
 
 .profile-btn:hover {
-  background-color: #5936a2;       /* slightly darker shade on hover */
+  background-color: #5936a2;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   transform: translateY(-1px);
 }
@@ -118,7 +118,29 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+/* Logout button */
+.logout-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
 
+.logout-btn:hover {
+  background-color: #b02a37;
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+  transform: translateY(-1px);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(220, 53, 69, 0.2);
+}
 
 /* Small screens (mobile) */
 @media (max-width: 768px) {
@@ -134,18 +156,22 @@
     flex-wrap: wrap;
   }
 
+  .header-right {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
   .nav-btn {
     font-size: 12px;
     padding: 6px 8px;
   }
 
-  .upload-btn {
+  .upload-btn,
+  .profile-btn,
+  .logout-btn {
     width: 100%;
+    text-align: center;
     padding: 10px;
-  }
-
-  .profile-btn {
-    width: 28px;
-    height: 28px;
+    font-size: 13px;
   }
 }

@@ -21,7 +21,7 @@ export default function AdminUsers() {
 
   // Table columns
   const columns = [
-    { name: "Name", selector: (row) => row.name, sortable: true },
+     { name: "Name", selector: (row) => row.fullname || "-", sortable: true },
     { name: "Email", selector: (row) => row.email, sortable: true },
     { name: "Role", selector: (row) => row.role || "student", sortable: true },
     { name: "Joined", selector: (row) => new Date(row.createdAt).toLocaleDateString(), sortable: true },
