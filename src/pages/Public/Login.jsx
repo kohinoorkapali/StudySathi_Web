@@ -29,26 +29,30 @@ const Login = () => {
         data: { email: data.email, password: data.password },
       });
 
-      if (res.access_token) {
-  localStorage.setItem("access_token", res.access_token);
-  if (res.role) localStorage.setItem("role", res.role);
+      if (res.access_token && res.user) {
+        // ✅ Store token, role, and user_id
+        localStorage.setItem("access_token", res.access_token);
+        localStorage.setItem("role", res.user.role);
+        localStorage.setItem("user_id", res.user.id);
 
-  // ✅ Store user_id
-  if (res.user && res.user.id) {
-    localStorage.setItem("user_id", res.user.id);
-  }
+        // Redirect based on role
+        if (res.user.role === "admin") navigate("/admin");
+        else navigate("/dashboard");
 
-  reset();
-  navigate("/dashboard");
-} else {
-  setBackendError(res.message || "Invalid credentials");
-}
+        reset();
+      } else {
+        setBackendError(res.message || "Invalid credentials");
+      }
     } catch (err) {
       setBackendError(err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
   };
+
+
+
+
 
   return (
     <div className="login-page">

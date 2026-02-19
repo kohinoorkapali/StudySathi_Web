@@ -13,6 +13,7 @@ const Browse = React.lazy(() => import("./pages/Private/Browse"));
 const MyResources = React.lazy(() => import("./pages/Private/MyResource"));
 const UploadResource = React.lazy(() => import("./pages/Private/UploadResource"));
 const Profile = React.lazy(() => import("./pages/Private/Profile"));
+const AdminPage = React.lazy(() => import("./pages/Private/Admin"));
 
 const AppRoutes = () => {
   return (
@@ -32,7 +33,7 @@ const AppRoutes = () => {
           <Route path="/browse" element={<Browse />} />
           <Route path="/resources" element={<MyResources />} />
           <Route path="/profile" element={<Profile />} />
-          
+          <Route path="/admin" element={<AdminPage />} />
         </Route>
 
         <Route element={<PrivateRoutes noHeader />}>

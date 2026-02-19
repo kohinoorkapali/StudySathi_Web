@@ -44,6 +44,7 @@ const ProfilePage = () => {
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("user_id");
+    localStorage.removeItem("role");
     window.location.href = "/login";
   };
 
