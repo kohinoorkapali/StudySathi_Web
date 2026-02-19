@@ -20,8 +20,8 @@ const Login = () => {
   });
 
   const togglePassword = () => setShowPassword(prev => !prev);
-
   const onSubmit = async (data) => {
+    if (loading) return; // Prevent double call
     setLoading(true);
     setBackendError("");
     try {
@@ -30,12 +30,10 @@ const Login = () => {
       });
 
       if (res.access_token && res.user) {
-        // ✅ Store token, role, and user_id
         localStorage.setItem("access_token", res.access_token);
         localStorage.setItem("role", res.user.role);
         localStorage.setItem("user_id", res.user.id);
 
-        // Redirect based on role
         if (res.user.role === "admin") navigate("/admin");
         else navigate("/dashboard");
 
@@ -49,10 +47,6 @@ const Login = () => {
       setLoading(false);
     }
   };
-
-
-
-
 
   return (
     <div className="login-page">
@@ -93,7 +87,6 @@ const Login = () => {
               />
             </div>
             {errors.password && <p className="invalid-feedback">{errors.password.message}</p>}
-            <Link to="/forgot-password" className="forgot-password">Forgot password?</Link>
           </div>
 
           <button type="submit" className="login-btn" disabled={loading}>

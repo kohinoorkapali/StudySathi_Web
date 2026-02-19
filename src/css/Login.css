@@ -22,7 +22,9 @@
   color: #fff;
 }
 
-.login-logo {
+.login-page .login-logo {
+  display: block;       /* ensures it behaves like a block element */
+  margin: 0 auto 10px;
  width: 220px;
   margin-bottom: 10px;
   filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
@@ -43,10 +45,13 @@
 /* Error */
 .backend-error {
   background: #fa7d7d33;
-  padding: 8px;
+  padding: 12px;           
   border-radius: 6px;
-  margin-bottom: 12px;
-  font-size: 0.85rem;
+  margin-bottom: 16px;
+  font-size: 1.2rem;     
+  font-weight: bold;      
+  color: #ffffff;         
+  text-align: center;     
 }
 
 /* Form */
@@ -73,6 +78,8 @@
   border: none;
   outline: none;
   font-size: 0.9rem;
+  background-color: white; /* solid white background */
+  color: #000; 
 }
 
 .login-input:focus {

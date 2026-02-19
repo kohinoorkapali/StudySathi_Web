@@ -1,5 +1,14 @@
 // src/pages/MyResources.jsx
 import React, { useEffect, useState } from "react";
+import pdfIcon from "../../assets/pdf.png";
+import docIcon from "../../assets/doc.png";
+import pptIcon from "../../assets/ppt.png";
+import defaultIcon from "../../assets/file.png";
+import descIcon from "../../assets/description.png";
+import streamIcon from "../../assets/stream.png";
+import authorIcon from "../../assets/author.png";
+import dateIcon from "../../assets/date.png";
+
 
 export default function MyResources({ all = false }) {
   const [resources, setResources] = useState([]);
@@ -114,21 +123,23 @@ export default function MyResources({ all = false }) {
 
   // Get emoji icon based on file extension
   const getFileIcon = (filePath) => {
-    if (!filePath) return "📁";
+    if (!filePath) return defaultIcon;
+
     const ext = filePath.split(".").pop().toLowerCase();
     switch (ext) {
       case "pdf":
-        return "📕";
+        return pdfIcon;
       case "doc":
       case "docx":
-        return "📝";
+        return docIcon;
       case "ppt":
       case "pptx":
-        return "📊";
+        return pptIcon;
       default:
-        return "📄";
+        return defaultIcon;
     }
   };
+
 
   return (
     <div className="min-h-screen bg-blue-100 py-10 px-4 relative">
@@ -258,8 +269,8 @@ export default function MyResources({ all = false }) {
 
             {/* File Card with Icon */}
             <div className="border rounded-lg p-6 mb-8 bg-gray-50 border-gray-200 text-center">
-              <div className="text-5xl mb-3">
-                {getFileIcon(viewingResource.file_path)}
+              <div className="mb-3">
+                <img src={getFileIcon(viewingResource.file_path)} alt="File Icon" className="w-16 h-16 mx-auto" />
               </div>
               <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-md text-sm font-bold border border-blue-100/50">
                 {viewingResource.file_path
@@ -273,32 +284,36 @@ export default function MyResources({ all = false }) {
             <div className="flex flex-col gap-6 text-gray-700 text-sm">
               {viewingResource.description && (
                 <div>
-                  <h4 className="font-semibold flex items-center gap-2 text-gray-700 mb-1">
-                    📖 Description
-                  </h4>
+                  <div className="flex items-center gap-2 mb-1">
+                    <img src={descIcon} alt="Description" className="w-5 h-5" />
+                    <h4 className="font-semibold text-gray-700">Description</h4>
+                  </div>
                   <p className="text-gray-600">{viewingResource.description}</p>
                 </div>
               )}
               {viewingResource.stream && (
                 <div>
-                  <h4 className="font-semibold flex items-center gap-2 text-gray-700 mb-1">
-                    🎓 Stream
-                  </h4>
+                  <div className="flex items-center gap-2 mb-1">
+                    <img src={streamIcon} alt="Stream" className="w-5 h-5" />
+                    <h4 className="font-semibold text-gray-700">Stream</h4>
+                  </div>
                   <span className="text-blue-600 px-2 py-1 bg-blue-50 rounded-md w-fit">
                     {viewingResource.stream}
                   </span>
                 </div>
               )}
               <div>
-                <h4 className="font-semibold flex items-center gap-2 text-gray-700 mb-1">
-                  👤 Uploaded By
-                </h4>
+                <div className="flex items-center gap-2 mb-1">
+                  <img src={authorIcon} alt="Author" className="w-5 h-5" />
+                  <h4 className="font-semibold text-gray-700">Uploaded By</h4>
+                </div>
                 <span>{viewingResource.author || "You"}</span>
               </div>
               <div>
-                <h4 className="font-semibold flex items-center gap-2 text-gray-700 mb-1">
-                  📅 Upload Date
-                </h4>
+                <div className="flex items-center gap-2 mb-1">
+                  <img src={dateIcon} alt="Upload Date" className="w-5 h-5" />
+                  <h4 className="font-semibold text-gray-700">Upload Date</h4>
+                </div>
                 <span>{new Date(viewingResource.createdAt).toLocaleDateString()}</span>
               </div>
             </div>

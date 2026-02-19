@@ -44,7 +44,7 @@ const handleDownload = (id) => {
       {/* Hero Section */}
       <div className="text-center mb-12">
         <h1 className="text-3xl sm:text-4xl font-bold text-blue-900">
-          Welcome to StudySasthi
+          Welcome to StudySathi
         </h1>
         <p className="text-slate-500 mt-3 text-sm sm:text-base">
           Your hub for sharing and discovering study materials

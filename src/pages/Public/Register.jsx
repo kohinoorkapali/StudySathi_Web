@@ -53,8 +53,7 @@ const toggleConfirmPassword = () => {
   return (
     <div className="RegisterPage">
       <div className="RegisterForm">
-        <img src={logo} alt="Logo" className="login-logo" />
-        <h2>Join studySathi</h2>
+        <img src={logo} alt="Logo" className="register-logo" />
         <p>Create your account to get started</p>
 
         <form onSubmit={handleSubmit(onSubmit)}>
