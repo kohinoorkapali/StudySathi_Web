@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MaterialCard from "../../components/MaterialCard";
 import { useApi } from "../../Hooks/useApi";
+import { downloadFile } from "../../utils/downloadFile";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -31,6 +32,12 @@ export default function Dashboard() {
     if (!dateStr) return "";
     return new Date(dateStr).toLocaleDateString();
   };
+
+  
+const handleDownload = (id) => {
+  downloadFile(id);
+};
+
 
   return (
     <div className="min-h-screen bg-blue-100 px-4 sm:px-6 lg:px-20 py-10">
@@ -74,7 +81,8 @@ export default function Dashboard() {
   description={item.description}
   file_path={item.file_path}
   file_type={item.file_type}
-  onDownload={() => console.log("Download", item.title)}
+  onDownload={() => handleDownload(item.id)}
+
 />
 
           ))
