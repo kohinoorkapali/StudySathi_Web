@@ -4,6 +4,13 @@ const ProfilePage = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [editing, setEditing] = useState(false);
+const [formData, setFormData] = useState({
+  name: "",
+  handle: "",
+  email: "",
+});
+
 
 useEffect(() => {
   const userId = localStorage.getItem("user_id");
@@ -77,10 +84,21 @@ useEffect(() => {
       <div className="max-w-6xl mt-12 mx-auto bg-white rounded-[2.5rem] shadow-xl p-8 md:p-12 relative overflow-hidden">
         {/* Edit Button */}
         <div className="absolute top-6 right-8 md:top-8 md:right-12">
-          <button className="px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 shadow-lg transition-all flex items-center gap-2">
+          <button
+            className="px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 shadow-lg transition-all flex items-center gap-2"
+            onClick={() => {
+              setEditing(true);
+              setFormData({
+                name: user.name,
+                handle: user.handle,
+                email: user.email,
+              });
+            }}
+          >
             Edit Profile
           </button>
         </div>
+
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Left Side */}
@@ -115,13 +133,112 @@ useEffect(() => {
         </div>
 
         {/* Stats Section */}
-        {/* Stats Section - Centered */}
-<div className="mt-12 flex justify-center">
-  <div className="bg-blue-100 rounded-2xl p-6 flex flex-col items-center shadow-sm w-80">
-    <span className="text-3xl font-bold text-blue-900">{user?.stats?.uploads || 0}</span>
-    <span className="text-sm font-semibold text-blue-600 uppercase tracking-wide mt-2">Total Uploads</span>
+        <div className="mt-12 flex justify-center">
+          <div className="bg-blue-100 rounded-2xl p-6 flex flex-col items-center shadow-sm w-80">
+            <span className="text-3xl font-bold text-blue-900">{user?.stats?.uploads || 0}</span>
+            <span className="text-sm font-semibold text-blue-600 uppercase tracking-wide mt-2">Total Uploads</span>
+          </div>
+        </div>
+
+        {editing && (
+  <div className="fixed inset-0 bg-black/40 flex items-start justify-center z-50 p-4 pt-10">
+    <div className="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-lg">
+      <button
+        onClick={() => setEditing(false)}
+        className="absolute top-3 right-3 text-xl font-bold"
+      >
+        &times;
+      </button>
+
+      <h2 className="text-2xl font-bold mb-4">Edit Profile</h2>
+
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const token = localStorage.getItem("access_token");
+          const userId = localStorage.getItem("user_id");
+
+          try {
+            const res = await fetch(`http://localhost:5000/api/users/${userId}`, {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+                ...(token && { Authorization: `Bearer ${token}` }),
+              },
+              body: JSON.stringify({
+                fullname: formData.name,
+                username: formData.handle,
+                email: formData.email,
+              }),
+            });
+
+            if (!res.ok) throw new Error("Update failed");
+
+            const data = await res.json();
+
+            setUser({
+              ...user,
+              name: data.data.fullname,
+              handle: data.data.username,
+              email: data.data.email,
+            });
+
+            setEditing(false);
+            alert("Profile updated successfully!");
+          } catch (err) {
+            alert("Update failed: " + err.message);
+          }
+        }}
+        className="flex flex-col gap-4"
+      >
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          placeholder="Full Name"
+          className="border rounded-md p-2"
+          required
+        />
+        <input
+          type="text"
+          name="handle"
+          value={formData.handle}
+          onChange={(e) => setFormData({ ...formData, handle: e.target.value })}
+          placeholder="Username"
+          className="border rounded-md p-2"
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          placeholder="Email"
+          className="border rounded-md p-2"
+          required
+        />
+
+        <div className="flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={() => setEditing(false)}
+            className="bg-gray-300 px-4 py-2 rounded-lg"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="bg-indigo-600 text-white px-4 py-2 rounded-lg"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
+)}
+
 
 
 
