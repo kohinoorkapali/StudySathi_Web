@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Pagination from "../../components/Pagination";
 import MaterialCard from "../../components/MaterialCard";
 import { useApi } from "../../Hooks/useApi";
+import { downloadFile } from "../../utils/downloadFile";
 
 export default function BrowsePage() {
   const [resources, setResources] = useState([]);
@@ -176,7 +177,7 @@ export default function BrowsePage() {
               description={res.description}
               stream={res.stream}
               onView={() => console.log("view", res.id)}
-              onDownload={() => console.log("download", res.id)}
+              onDownload={() => downloadFile(res.id)}
             />
           ))}
         </div>
