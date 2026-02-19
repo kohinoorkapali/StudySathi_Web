@@ -5,41 +5,61 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const userId = localStorage.getItem("user_id");
-    const token = localStorage.getItem("access_token");
+useEffect(() => {
+  const userId = localStorage.getItem("user_id");
+  const token = localStorage.getItem("access_token");
 
-    if (!userId) {
-      setError("User not logged in");
-      setLoading(false);
-      return;
-    }
+  if (!userId) {
+    setError("User not logged in");
+    setLoading(false);
+    return;
+  }
 
-    fetch(`http://localhost:5000/api/users/${userId}`, {
+  // Fetch user info
+  const fetchUser = fetch(`http://localhost:5000/api/users/${userId}`, {
+    headers: {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+  }).then((res) => {
+    if (!res.ok) throw new Error("Failed to fetch user data");
+    return res.json();
+  });
+
+  // Fetch user's uploaded materials
+  const fetchUploads = fetch(
+    `http://localhost:5000/api/materials/my?user_id=${userId}`,
+    {
       headers: {
         "Content-Type": "application/json",
         ...(token && { Authorization: `Bearer ${token}` }),
       },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch user data");
-        return res.json();
-      })
-      .then((data) => {
-        const backendUser = data.data;
-        setUser({
-          name: backendUser.fullname,
-          handle: backendUser.username,
-          email: backendUser.email,
-          stats: { uploads: 0, downloads: 0 }, // placeholder for now
-        });
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
+    }
+  ).then((res) => {
+    if (!res.ok) throw new Error("Failed to fetch uploads");
+    return res.json();
+  });
+
+  // Wait for both fetches
+  Promise.all([fetchUser, fetchUploads])
+    .then(([userData, uploadsData]) => {
+      const backendUser = userData.data;
+      const uploadsCount = uploadsData.data ? uploadsData.data.length : 0;
+
+      setUser({
+        name: backendUser.fullname,
+        handle: backendUser.username,
+        email: backendUser.email,
+        stats: { uploads: uploadsCount},
       });
-  }, []);
+      setLoading(false);
+    })
+    .catch((err) => {
+      setError(err.message);
+      setLoading(false);
+    });
+}, []);
+
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
@@ -95,17 +115,15 @@ const ProfilePage = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-blue-100 rounded-2xl p-6 flex flex-col items-center shadow-sm">
-            <span className="text-3xl font-bold text-blue-900">{user?.stats?.uploads || 0}</span>
-            <span className="text-sm font-semibold text-blue-600 uppercase tracking-wide mt-2">Total Uploads</span>
-          </div>
+        {/* Stats Section - Centered */}
+<div className="mt-12 flex justify-center">
+  <div className="bg-blue-100 rounded-2xl p-6 flex flex-col items-center shadow-sm w-80">
+    <span className="text-3xl font-bold text-blue-900">{user?.stats?.uploads || 0}</span>
+    <span className="text-sm font-semibold text-blue-600 uppercase tracking-wide mt-2">Total Uploads</span>
+  </div>
+</div>
 
-          <div className="bg-blue-100 rounded-2xl p-6 flex flex-col items-center shadow-sm">
-            <span className="text-3xl font-bold text-blue-900">{user?.stats?.downloads || 0}</span>
-            <span className="text-sm font-semibold text-blue-600 uppercase tracking-wide mt-2">Total Downloads</span>
-          </div>
-        </div>
+
 
         {/* Logout Button */}
         <div className="mt-12 flex justify-end">
