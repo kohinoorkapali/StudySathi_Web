@@ -1,7 +1,7 @@
 // src/pages/MyResources.jsx
 import React, { useEffect, useState } from "react";
 
-export default function MyResources() {
+export default function MyResources({ all = false }) {
   const [resources, setResources] = useState([]);
   const [editingResource, setEditingResource] = useState(null);
   const [viewingResource, setViewingResource] = useState(null);
@@ -11,14 +11,18 @@ export default function MyResources() {
     stream: "",
   });
 
-  // Fetch user's resources
+  // Fetch resources (all or only mine)
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
-    fetch(`http://localhost:5000/api/materials/my?user_id=${userId}`)
+    const url = all
+      ? `http://localhost:5000/api/materials` // fetch all
+      : `http://localhost:5000/api/materials/my?user_id=${userId}`; // fetch my materials
+
+    fetch(url)
       .then((res) => res.json())
       .then((result) => setResources(result.data))
       .catch((err) => console.error(err));
-  }, []);
+  }, [all]);
 
   // Delete resource
   const handleDelete = async (id) => {
@@ -41,7 +45,6 @@ export default function MyResources() {
     }
   };
 
-  // Open Edit modal
   const openEditPanel = (res) => {
     setEditingResource(res);
     setFormData({
@@ -51,7 +54,6 @@ export default function MyResources() {
     });
   };
 
-  // Open View modal
   const openViewPanel = (res) => setViewingResource(res);
   const closeViewPanel = () => setViewingResource(null);
   const closeEditPanel = () => {
@@ -88,13 +90,35 @@ export default function MyResources() {
     }
   };
 
+  // Helper to get emoji icon from file extension (used only in View modal)
+  const getFileIcon = (filePath) => {
+    if (!filePath) return "📁";
+    const ext = filePath.split(".").pop().toLowerCase();
+    switch (ext) {
+      case "pdf":
+        return "📕";
+      case "doc":
+      case "docx":
+        return "📝";
+      case "ppt":
+      case "pptx":
+        return "📊";
+      default:
+        return "📄";
+    }
+  };
+
   return (
     <div className="min-h-screen bg-blue-100 py-10 px-4 relative">
       <div className="max-w-[1600px] mx-auto bg-white rounded-3xl shadow-md p-10">
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-slate-800 mb-2">My Resources</h1>
+          <h1 className="text-3xl font-bold text-slate-800 mb-2">
+            {all ? "All Resources" : "My Resources"}
+          </h1>
           <p className="text-slate-500 text-base">
-            Here are the materials you've uploaded.
+            {all
+              ? "Browse all study materials."
+              : "Here are the materials you've uploaded."}
           </p>
         </div>
 
@@ -107,6 +131,7 @@ export default function MyResources() {
                 key={res.id}
                 className="w-full bg-slate-100 border border-blue-100 rounded-2xl p-6 hover:shadow-md transition-shadow"
               >
+                {/* Card Header WITHOUT file icon */}
                 <div className="flex flex-col gap-1 mb-3">
                   <h2 className="text-lg font-bold text-slate-800">{res.title}</h2>
                   <p className="text-sm text-slate-500">
@@ -119,6 +144,7 @@ export default function MyResources() {
                     </span>
                   )}
                 </div>
+
                 {res.description && (
                   <p className="text-slate-600 text-sm line-clamp-3 mb-4">{res.description}</p>
                 )}
@@ -130,18 +156,22 @@ export default function MyResources() {
                   >
                     View
                   </button>
-                  <button
-                    onClick={() => openEditPanel(res)}
-                    className="bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-emerald-600 transition-colors"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(res.id)}
-                    className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-red-600 transition-colors"
-                  >
-                    Delete
-                  </button>
+                  {!all && (
+                    <>
+                      <button
+                        onClick={() => openEditPanel(res)}
+                        className="bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-emerald-600 transition-colors"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(res.id)}
+                        className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-red-600 transition-colors"
+                      >
+                        Delete
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             ))}
@@ -149,7 +179,7 @@ export default function MyResources() {
         )}
       </div>
 
-      {/* VIEW MODAL (Card-style like MaterialCard) */}
+      {/* VIEW MODAL */}
       {viewingResource && (
         <div
           className="fixed inset-0 bg-black/40 flex items-start justify-center z-50 p-4 pt-10 overflow-y-auto"
@@ -165,12 +195,15 @@ export default function MyResources() {
 
             <h3 className="text-3xl font-bold mb-6">{viewingResource.title}</h3>
 
-            {/* File icon */}
-            <div className="border rounded-lg p-6 mb-8 bg-red-50 border-red-200 text-center">
-              <div className="text-red-500 mb-3 text-5xl">📄</div>
+            {/* File display in View modal */}
+            <div className="border rounded-lg p-6 mb-8 bg-gray-50 border-gray-200 text-center">
+              <div className="text-5xl mb-3">{getFileIcon(viewingResource.file_path)}</div>
               <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-md text-sm font-bold border border-blue-100/50">
-                PDF
+                {viewingResource.file_path
+                  ? viewingResource.file_path.split(".").pop().toUpperCase()
+                  : "FILE"}
               </span>
+              <p className="mt-2 text-sm text-gray-600">{viewingResource.file_path}</p>
             </div>
 
             {/* Details */}
@@ -210,7 +243,7 @@ export default function MyResources() {
         </div>
       )}
 
-      {/* EDIT MODAL (same as before, card-style) */}
+      {/* EDIT MODAL (only for own resources) */}
       {editingResource && (
         <div
           className="fixed inset-0 bg-black/40 flex items-start justify-center z-50 p-4 pt-10"

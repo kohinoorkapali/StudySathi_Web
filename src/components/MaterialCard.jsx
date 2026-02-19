@@ -6,23 +6,41 @@ export default function MaterialCard({
   date,
   description,
   stream,
-  subject = "Physics",
-  year = "12th",
+  filePath, // <-- keep this for the modal
   onView,
   onDownload,
 }) {
   const [showPreview, setShowPreview] = useState(false);
 
-  // Temporary placeholder for file type (PDF)
-  const fileType = "PDF";
+  // Helper to get emoji icon from file extension (used ONLY in modal)
+  const getFileIcon = (filePath) => {
+    if (!filePath) return "📁";
+    const ext = filePath.split(".").pop().toLowerCase();
+    switch (ext) {
+      case "pdf":
+        return "📕";
+      case "doc":
+      case "docx":
+        return "📝";
+      case "ppt":
+      case "pptx":
+        return "📊";
+      default:
+        return "📄";
+    }
+  };
+
+  const fileType = filePath ? filePath.split(".").pop().toUpperCase() : "FILE";
 
   return (
     <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all group">
       {/* Card Content */}
       <div className="flex flex-col gap-2 mb-5">
+        {/* Title WITHOUT file icon */}
         <h4 className="font-bold text-slate-800 text-lg group-hover:text-blue-600 transition-colors">
           {title}
         </h4>
+
         {(author || date) && (
           <div className="flex items-center gap-2 text-sm text-slate-500">
             {author && (
@@ -34,9 +52,11 @@ export default function MaterialCard({
             {date && <span>{date}</span>}
           </div>
         )}
+
         {description && (
           <p className="text-slate-600 text-sm line-clamp-3">{description}</p>
         )}
+
         {stream && (
           <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-md text-xs font-bold border border-blue-100/50 inline-block w-fit">
             {stream}
@@ -60,7 +80,7 @@ export default function MaterialCard({
         </button>
       </div>
 
-      {/* Preview Modal */}
+      {/* Preview Modal (file icon appears here) */}
       {showPreview && (
         <div
           className="fixed inset-0 bg-black/40 flex items-start justify-center z-50 p-4 pt-10 overflow-y-auto"
@@ -80,17 +100,16 @@ export default function MaterialCard({
             {/* Title */}
             <h3 className="text-3xl font-bold mb-6">{title}</h3>
 
-            {/* File Card */}
+            {/* File Card with Icon */}
             <div className="border rounded-lg p-6 mb-8 bg-red-50 border-red-200 text-center">
-              <div className="text-red-500 mb-3 text-5xl">📄</div>
+              <div className="text-red-500 mb-3 text-5xl">{getFileIcon(filePath)}</div>
               <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-md text-sm font-bold border border-blue-100/50">
                 {fileType}
               </span>
             </div>
 
-            {/* Vertical Details */}
+            {/* Details */}
             <div className="flex flex-col gap-6 text-gray-700 text-sm">
-              {/* Description */}
               {description && (
                 <div>
                   <h4 className="font-semibold flex items-center gap-2 text-gray-700 mb-1">
@@ -100,7 +119,6 @@ export default function MaterialCard({
                 </div>
               )}
 
-              {/* Stream */}
               {stream && (
                 <div>
                   <h4 className="font-semibold flex items-center gap-2 text-gray-700 mb-1">
@@ -112,7 +130,6 @@ export default function MaterialCard({
                 </div>
               )}
 
-              {/* Uploaded By */}
               {author && (
                 <div>
                   <h4 className="font-semibold flex items-center gap-2 text-gray-700 mb-1">
@@ -122,7 +139,6 @@ export default function MaterialCard({
                 </div>
               )}
 
-              {/* Upload Date */}
               {date && (
                 <div>
                   <h4 className="font-semibold flex items-center gap-2 text-gray-700 mb-1">

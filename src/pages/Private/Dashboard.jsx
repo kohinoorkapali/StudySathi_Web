@@ -79,7 +79,7 @@ const handleDownload = (id) => {
   date={formatDate(item.createdAt)}
   stream={item.stream}
   description={item.description}
-  file_path={item.file_path}
+  filePath={item.file_path}
   file_type={item.file_type}
   onDownload={() => handleDownload(item.id)}
 

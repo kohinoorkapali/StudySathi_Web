@@ -178,6 +178,7 @@ export default function BrowsePage() {
               stream={res.stream}
               onView={() => console.log("view", res.id)}
               onDownload={() => downloadFile(res.id)}
+              filePath={res.file_path}
             />
           ))}
         </div>
