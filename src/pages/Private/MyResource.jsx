@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 export default function MyResources() {
   const [resources, setResources] = useState([]);
   const [editingResource, setEditingResource] = useState(null);
+  const [viewingResource, setViewingResource] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -40,7 +41,7 @@ export default function MyResources() {
     }
   };
 
-  // Open edit modal
+  // Open Edit modal
   const openEditPanel = (res) => {
     setEditingResource(res);
     setFormData({
@@ -50,7 +51,9 @@ export default function MyResources() {
     });
   };
 
-  // Close modal
+  // Open View modal
+  const openViewPanel = (res) => setViewingResource(res);
+  const closeViewPanel = () => setViewingResource(null);
   const closeEditPanel = () => {
     setEditingResource(null);
     setFormData({ title: "", description: "", stream: "" });
@@ -121,7 +124,10 @@ export default function MyResources() {
                 )}
 
                 <div className="flex justify-end gap-2">
-                  <button className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-600 transition-colors">
+                  <button
+                    onClick={() => openViewPanel(res)}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-600 transition-colors"
+                  >
                     View
                   </button>
                   <button
@@ -143,94 +149,145 @@ export default function MyResources() {
         )}
       </div>
 
-      {/* Inline Edit Modal */}
-{/* Inline Edit Modal */}
-{editingResource && (
-  <div
-    className="fixed inset-0 bg-black/40 flex items-start justify-center z-50 p-4 pt-10"
-    onClick={(e) => e.target === e.currentTarget && closeEditPanel()}
-  >
-    <div className="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-lg">
-      <button
-        className="absolute top-3 right-3 text-xl font-bold"
-        onClick={closeEditPanel}
-      >
-        &times;
-      </button>
+      {/* VIEW MODAL (Card-style like MaterialCard) */}
+      {viewingResource && (
+        <div
+          className="fixed inset-0 bg-black/40 flex items-start justify-center z-50 p-4 pt-10 overflow-y-auto"
+          onClick={(e) => e.target === e.currentTarget && closeViewPanel()}
+        >
+          <div className="bg-white rounded-2xl max-w-lg w-full min-h-[500px] p-6 relative shadow-lg">
+            <button
+              onClick={closeViewPanel}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 font-bold text-xl"
+            >
+              &times;
+            </button>
 
-      <h2 className="text-2xl font-bold mb-4">Edit Resource</h2>
+            <h3 className="text-3xl font-bold mb-6">{viewingResource.title}</h3>
 
-      {/* Card-style editable inputs */}
-      <div className="flex flex-col gap-4">
-        {/* Title */}
-        <div>
-          <label className="font-medium">Title</label>
-          <input
-            type="text"
-            className="border rounded-md p-2 mt-1 w-full"
-            value={formData.title}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, title: e.target.value }))
-            }
-          />
+            {/* File icon */}
+            <div className="border rounded-lg p-6 mb-8 bg-red-50 border-red-200 text-center">
+              <div className="text-red-500 mb-3 text-5xl">📄</div>
+              <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-md text-sm font-bold border border-blue-100/50">
+                PDF
+              </span>
+            </div>
+
+            {/* Details */}
+            <div className="flex flex-col gap-6 text-gray-700 text-sm">
+              {viewingResource.description && (
+                <div>
+                  <h4 className="font-semibold flex items-center gap-2 text-gray-700 mb-1">
+                    📖 Description
+                  </h4>
+                  <p className="text-gray-600">{viewingResource.description}</p>
+                </div>
+              )}
+              {viewingResource.stream && (
+                <div>
+                  <h4 className="font-semibold flex items-center gap-2 text-gray-700 mb-1">
+                    🎓 Stream
+                  </h4>
+                  <span className="text-blue-600 px-2 py-1 bg-blue-50 rounded-md w-fit">
+                    {viewingResource.stream}
+                  </span>
+                </div>
+              )}
+              <div>
+                <h4 className="font-semibold flex items-center gap-2 text-gray-700 mb-1">
+                  👤 Uploaded By
+                </h4>
+                <span>{viewingResource.author || "You"}</span>
+              </div>
+              <div>
+                <h4 className="font-semibold flex items-center gap-2 text-gray-700 mb-1">
+                  📅 Upload Date
+                </h4>
+                <span>{new Date(viewingResource.createdAt).toLocaleDateString()}</span>
+              </div>
+            </div>
+          </div>
         </div>
+      )}
 
-        {/* Description */}
-        <div>
-          <label className="font-medium">Description</label>
-          <textarea
-            className="border rounded-md p-2 mt-1 w-full min-h-[60px]"
-            value={formData.description}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, description: e.target.value }))
-            }
-          />
+      {/* EDIT MODAL (same as before, card-style) */}
+      {editingResource && (
+        <div
+          className="fixed inset-0 bg-black/40 flex items-start justify-center z-50 p-4 pt-10"
+          onClick={(e) => e.target === e.currentTarget && closeEditPanel()}
+        >
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-lg">
+            <button
+              className="absolute top-3 right-3 text-xl font-bold"
+              onClick={closeEditPanel}
+            >
+              &times;
+            </button>
+
+            <h2 className="text-2xl font-bold mb-4">Edit Resource</h2>
+
+            <div className="flex flex-col gap-4">
+              <div>
+                <label className="font-medium">Title</label>
+                <input
+                  type="text"
+                  className="border rounded-md p-2 mt-1 w-full"
+                  value={formData.title}
+                  onChange={handleChange}
+                  name="title"
+                />
+              </div>
+
+              <div>
+                <label className="font-medium">Description</label>
+                <textarea
+                  className="border rounded-md p-2 mt-1 w-full min-h-[60px]"
+                  value={formData.description}
+                  onChange={handleChange}
+                  name="description"
+                />
+              </div>
+
+              <div>
+                <label className="font-medium">Stream</label>
+                <select
+                  className="border rounded-md p-2 mt-1 w-full"
+                  value={formData.stream}
+                  onChange={handleChange}
+                  name="stream"
+                >
+                  <option value="">Select Stream</option>
+                  <option value="Science">Science</option>
+                  <option value="Commerce">Commerce</option>
+                  <option value="Arts">Arts</option>
+                  <option value="Engineering">Engineering</option>
+                  <option value="Medical">Medical</option>
+                  <option value="Law">Law</option>
+                  <option value="Management">Management</option>
+                  <option value="IT">Information Technology (IT)</option>
+                  <option value="Education">Education</option>
+                  <option value="Humanities">Humanities</option>
+                </select>
+              </div>
+
+              <div className="flex justify-end gap-2 mt-2">
+                <button
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400"
+                  onClick={closeEditPanel}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600"
+                  onClick={handleUpdate}
+                >
+                  Update
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-
-        {/* Stream */}
-        <div>
-          <label className="font-medium">Stream</label>
-          <select
-            value={formData.stream}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, stream: e.target.value }))
-            }
-            className="border rounded-md p-2 mt-1 w-full"
-          >
-            <option value="">Select Stream</option>
-            <option value="Science">Science</option>
-            <option value="Commerce">Commerce</option>
-            <option value="Arts">Arts</option>
-            <option value="Engineering">Engineering</option>
-            <option value="Medical">Medical</option>
-            <option value="Law">Law</option>
-            <option value="Management">Management</option>
-            <option value="IT">Information Technology (IT)</option>
-            <option value="Education">Education</option>
-            <option value="Humanities">Humanities</option>
-          </select>
-        </div>
-
-        {/* Buttons */}
-        <div className="flex justify-end gap-2 mt-2">
-          <button
-            className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400"
-            onClick={closeEditPanel}
-          >
-            Cancel
-          </button>
-          <button
-            className="bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600"
-            onClick={handleUpdate}
-          >
-            Update
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
-
+      )}
     </div>
   );
 }
