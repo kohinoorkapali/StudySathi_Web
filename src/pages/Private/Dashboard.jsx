@@ -66,15 +66,17 @@ export default function Dashboard() {
         ) : (
           uploads.map((item) => (
             <MaterialCard
-              key={item.id}
-              title={item.title}
-              author={item.author}// display author if joined
-              date={formatDate(item.createdAt)}
-              stream={item.stream}
-              description={item.description}
-              onView={() => console.log("View", item.title)}
-              onDownload={() => console.log("Download", item.title)}
-            />
+  key={item.id}
+  title={item.title}
+  author={item.author}
+  date={formatDate(item.createdAt)}
+  stream={item.stream}
+  description={item.description}
+  file_path={item.file_path}
+  file_type={item.file_type}
+  onDownload={() => console.log("Download", item.title)}
+/>
+
           ))
         )}
       </div>
