@@ -28,16 +28,19 @@ const AppRoutes = () => {
         </Route>
 
         {/* Private Routes */}
-        <Route element={<PrivateRoutes />}>
+        <Route element={<PrivateRoutes allowedRoles={["user"]} />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/browse" element={<Browse />} />
           <Route path="/resources" element={<MyResources />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/admin" element={<AdminPage />} />
         </Route>
 
-        <Route element={<PrivateRoutes noHeader />}>
+        <Route element={<PrivateRoutes allowedRoles={["user"]} noHeader />}>
           <Route path="/upload" element={<UploadResource />} />
+        </Route>
+        
+        <Route element={<PrivateRoutes allowedRoles={["admin"]} />}>
+          <Route path="/admin" element={<AdminPage />} />
         </Route>
         {/* Redirect unknown paths */}
         <Route path="*" element={<Navigate to="/" replace />} />

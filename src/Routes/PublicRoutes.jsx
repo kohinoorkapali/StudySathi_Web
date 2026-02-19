@@ -3,7 +3,14 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const PublicRoutes = () => {
   const token = localStorage.getItem("access_token");
-  return token ? <Navigate to="/dashboard" replace /> : <Outlet />;
+  const role = localStorage.getItem("role");
+
+  if (!token) return <Outlet />;
+
+  return role === "admin"
+    ? <Navigate to="/admin" replace />
+    : <Navigate to="/dashboard" replace />;
 };
+
 
 export default PublicRoutes;
