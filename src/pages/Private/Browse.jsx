@@ -4,55 +4,47 @@ import Pagination from "../../components/Pagination";
 import MaterialCard from "../../components/MaterialCard";
 import { useApi } from "../../Hooks/useApi";
 import { downloadFile } from "../../utils/downloadFile";
+import filterIcon from "../../assets/filter.png"; // <-- your filter image
 
 export default function BrowsePage() {
   const [resources, setResources] = useState([]);
   const [sortOrder, setSortOrder] = useState("newest");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [showFilters, setShowFilters] = useState(false); // toggle for mobile
   const itemsPerPage = 12;
 
   const streams = [
-    "Science",
-    "Commerce",
-    "Arts",
-    "Engineering",
-    "Medical",
-    "Law",
-    "Management",
-    "IT",
-    "Education",
-    "Humanities",
+    "Science", "Commerce", "Arts", "Engineering", "Medical",
+    "Law", "Management", "IT", "Education", "Humanities"
   ];
 
   const [selectedStreams, setSelectedStreams] = useState([]);
   const { callApi } = useApi();
 
-  // Fetch materials from backend
+  // Fetch materials
   useEffect(() => {
     const fetchResources = async () => {
       try {
-        const data = await callApi("GET", "/materials"); // GET all materials
+        const data = await callApi("GET", "/materials");
         setResources(data.data || []);
       } catch (err) {
         console.error("Failed to fetch materials:", err);
       }
     };
-
     fetchResources();
   }, [callApi]);
 
   const toggleStream = (stream) => {
-    setSelectedStreams((prev) =>
+    setSelectedStreams(prev =>
       prev.includes(stream)
-        ? prev.filter((s) => s !== stream)
+        ? prev.filter(s => s !== stream)
         : [...prev, stream]
     );
     setCurrentPage(1);
   };
 
-  // Filter by search and stream
-  const filteredResources = resources.filter((res) => {
+  const filteredResources = resources.filter(res => {
     const matchesSearch =
       res.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (res.author && res.author.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -61,15 +53,12 @@ export default function BrowsePage() {
     return matchesSearch && matchesStream;
   });
 
-  // Sort by date
   const sortedResources = [...filteredResources].sort((a, b) => {
     const dateA = new Date(a.createdAt || a.date);
     const dateB = new Date(b.createdAt || b.date);
-    if (sortOrder === "newest") return dateB - dateA;
-    return dateA - dateB;
+    return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
   });
 
-  // Pagination
   const totalPages = Math.ceil(sortedResources.length / itemsPerPage);
   const displayedResources = sortedResources.slice(
     (currentPage - 1) * itemsPerPage,
@@ -82,51 +71,79 @@ export default function BrowsePage() {
     setCurrentPage(1);
   };
 
-  // Helper: format date without time
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
-    return new Date(dateStr).toLocaleDateString(); // e.g., "2/15/2026"
+    return new Date(dateStr).toLocaleDateString();
   };
 
   return (
     <div className="flex min-h-screen bg-blue-100 font-sans text-slate-700">
+      {/* FILTER ICON FOR MOBILE */}
+      <div className="lg:hidden fixed top-4 left-4 z-50">
+  <img
+    src={filterIcon}
+    alt="Filters"
+    className="w-8 h-8 cursor-pointer rounded-lg"
+    onClick={() => setShowFilters(true)}
+  />
+</div>
+
       {/* SIDEBAR */}
-      <aside className="w-72 hidden lg:flex flex-col bg-blue-200 border-r border-slate-200 sticky top-0 h-screen">
-        <div className="p-8 flex-1 overflow-y-auto">
-          <h2 className="text-xl font-bold mb-6 text-slate-800">Filters</h2>
-
-          <div className="mb-10">
-            <h3 className="font-bold text-sm text-slate-500 uppercase tracking-wider mb-4">
-              Stream
-            </h3>
-            <div className="space-y-3">
-              {streams.map((s) => (
-                <label key={s} className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={selectedStreams.includes(s)}
-                    onChange={() => toggleStream(s)}
-                    className="w-4 h-4 rounded border-gray-300 text-blue-600"
-                  />
-                  <span className="text-[15px] text-slate-600">{s}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
+      <aside
+        className={`fixed top-0 left-0 h-full w-72 bg-blue-200 border-r border-slate-200 p-8 overflow-y-auto z-40 transition-transform duration-300
+          ${showFilters ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 lg:static lg:flex flex-col`}
+      >
+        {/* Close button for mobile */}
+        <div className="lg:hidden mb-6 flex justify-end">
           <button
-            onClick={clearFilters}
-            className="w-full py-2.5 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 font-semibold text-sm"
+            onClick={() => setShowFilters(false)}
+            className="text-red-600 font-bold text-lg px-3 py-1 rounded-lg hover:bg-red-100 transition"
           >
-            Clear All Filters
+            X
           </button>
         </div>
+
+        <h2 className="text-xl font-bold mb-6 text-slate-800">Filters</h2>
+
+        <div className="mb-10">
+          <h3 className="font-bold text-sm text-slate-500 uppercase tracking-wider mb-4">
+            Stream
+          </h3>
+          <div className="space-y-3">
+            {streams.map((s) => (
+              <label key={s} className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={selectedStreams.includes(s)}
+                  onChange={() => toggleStream(s)}
+                  className="w-4 h-4 rounded border-gray-300 text-blue-600"
+                />
+                <span className="text-[15px] text-slate-600">{s}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <button
+          onClick={clearFilters}
+          className="w-full py-2.5 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 font-semibold text-sm"
+        >
+          Clear All Filters
+        </button>
       </aside>
 
-      {/* MAIN */}
+      {/* OVERLAY FOR MOBILE */}
+      {showFilters && (
+        <div
+          className="fixed inset-0 bg-black/30 z-30 lg:hidden"
+          onClick={() => setShowFilters(false)}
+        />
+      )}
+
+      {/* MAIN CONTENT */}
       <main className="flex-1 p-6 lg:p-10">
         {/* SEARCH */}
-        <div className="mb-8">
+        <div className="mb-4">
           <input
             type="text"
             placeholder="Search by title or author..."
@@ -139,6 +156,34 @@ export default function BrowsePage() {
             }}
           />
         </div>
+
+        {/* FILTERS BELOW SEARCH ON MOBILE */}
+        {showFilters && (
+          <div className="lg:hidden mb-6 p-4 bg-blue-200 rounded-xl">
+            <h3 className="font-bold text-sm text-slate-500 uppercase tracking-wider mb-3">
+              Stream
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {streams.map((s) => (
+                <label key={s} className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={selectedStreams.includes(s)}
+                    onChange={() => toggleStream(s)}
+                    className="w-4 h-4 rounded border-gray-300 text-blue-600"
+                  />
+                  <span className="text-sm text-slate-600">{s}</span>
+                </label>
+              ))}
+            </div>
+            <button
+              onClick={clearFilters}
+              className="mt-4 w-full py-2.5 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 font-semibold text-sm"
+            >
+              Clear All Filters
+            </button>
+          </div>
+        )}
 
         {/* HEADER */}
         <div className="flex flex-col md:flex-row justify-between mb-8 gap-4">
@@ -173,7 +218,7 @@ export default function BrowsePage() {
               key={res.id}
               title={res.title}
               author={res.author}
-              date={formatDate(res.createdAt || res.date)} // only date
+              date={formatDate(res.createdAt || res.date)}
               description={res.description}
               stream={res.stream}
               onView={() => console.log("view", res.id)}
