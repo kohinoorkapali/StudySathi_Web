@@ -14,6 +14,32 @@ export default function MyResources() {
       })
       .catch((err) => console.error(err));
   }, []);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this resource?")) return;
+
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await fetch(`http://localhost:5000/api/materials/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+
+      if (!response.ok) throw new Error("Failed to delete");
+
+      // Update state to remove deleted resource
+      setResources((prev) => prev.filter((res) => res.id !== id));
+      alert("Resource deleted successfully");
+    } catch (err) {
+      console.error(err);
+      alert("Delete failed: " + err.message);
+    }
+  };
+
+
 return (
   <div className="min-h-screen bg-blue-100 py-10 px-4">
 
@@ -75,9 +101,13 @@ return (
                   Edit
                 </button>
 
-                <button className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-red-600 transition-colors">
-                  Delete
-                </button>
+                <button
+  onClick={() => handleDelete(res.id)}
+  className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-red-600 transition-colors"
+>
+  Delete
+</button>
+
               </div>
             </div>
           ))}
